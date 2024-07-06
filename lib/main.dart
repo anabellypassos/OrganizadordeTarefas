@@ -37,25 +37,35 @@ class MyHomePage extends StatelessWidget {
               style: TextStyle(
                 fontSize: 34,
                 color: Colors.white,
-                fontFamily: 'Roboto', // Substitua pelo nome da sua fonte
+                fontFamily: 'Roboto',
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.left,
             ),
-            const SizedBox(height: 20), // Espaço entre o texto e a imagem
+            const SizedBox(height: 20), 
             Image.asset(
-              'assets/image/logo.png', // Caminho corrigido da sua imagem
-              width: 250, // Largura da imagem
-              height: 250, // Altura da imagem
+              'assets/image/logo.png', 
+              width: 250, 
+              height: 250, 
             ),
             const SizedBox(height: 51),
-            ElevatedButton(
+            SizedBox(
+              width: 252,
+              height: 53,
+            child: ElevatedButton(
             onPressed: (){
 
             },
             style: ElevatedButton.styleFrom(
               backgroundColor:const  Color(0xFFFCC65C),
               
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  side: const BorderSide(
+                    color: Color(0xFF2C2C2C),
+                    width: 1,
+                  ),
+                ),
             ),
             child: const Text(
              'Ir para a home',
@@ -67,6 +77,7 @@ class MyHomePage extends StatelessWidget {
              ),
               ),
                 
+            )
             ),
           ],
           
