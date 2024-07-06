@@ -22,7 +22,8 @@ flutter:
 
   assets:
     - assets\image\logo.png
-
+    - assets\image\menu.png
+    - assets\image\nave.png
   fonts:
     - family: Roboto
       fonts:

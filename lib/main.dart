@@ -72,7 +72,7 @@ class MyHomePage extends StatelessWidget {
                   ),
                 ),
                 child: const Text(
-                  'Ir para a home',
+                  'Ir para o menu',
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontWeight: FontWeight.bold,
