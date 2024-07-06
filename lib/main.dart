@@ -45,10 +45,31 @@ class MyHomePage extends StatelessWidget {
             const SizedBox(height: 20), // Espaço entre o texto e a imagem
             Image.asset(
               'assets/image/logo.png', // Caminho corrigido da sua imagem
-              width: 352, // Largura da imagem
-              height: 409, // Altura da imagem
+              width: 250, // Largura da imagem
+              height: 250, // Altura da imagem
+            ),
+            const SizedBox(height: 51),
+            ElevatedButton(
+            onPressed: (){
+
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor:const  Color(0xFFFCC65C),
+              
+            ),
+            child: const Text(
+             'Ir para a home',
+             style: TextStyle(
+              fontFamily: 'Roboto',
+              fontWeight: FontWeight.bold,
+               fontSize: 20,
+              color: Colors.white,
+             ),
+              ),
+                
             ),
           ],
+          
         ),
       ),
     );
