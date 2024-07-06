@@ -40,13 +40,13 @@ class MyHomePage extends StatelessWidget {
                 fontFamily: 'Roboto', // Substitua pelo nome da sua fonte
                 fontWeight: FontWeight.bold,
               ),
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.left,
             ),
             const SizedBox(height: 20), // Espaço entre o texto e a imagem
             Image.asset(
               'assets/image/logo.png', // Caminho corrigido da sua imagem
-              width: 200, // Largura da imagem
-              height: 200, // Altura da imagem
+              width: 352, // Largura da imagem
+              height: 409, // Altura da imagem
             ),
           ],
         ),
