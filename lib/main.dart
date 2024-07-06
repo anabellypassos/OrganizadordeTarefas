@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'Home/home_principal.dart';
+
 void main() {
   runApp(const Inicio());
 }
@@ -42,45 +44,45 @@ class MyHomePage extends StatelessWidget {
               ),
               textAlign: TextAlign.left,
             ),
-            const SizedBox(height: 20), 
+            const SizedBox(height: 20),
             Image.asset(
-              'assets/image/logo.png', 
-              width: 250, 
-              height: 250, 
+              'assets/image/logo.png',
+              width: 250,
+              height: 250,
             ),
             const SizedBox(height: 51),
             SizedBox(
               width: 252,
               height: 53,
-            child: ElevatedButton(
-            onPressed: (){
-
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor:const  Color(0xFFFCC65C),
-              
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  side: const BorderSide(
-                    color: Color(0xFF2C2C2C),
-                    width: 1,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Home()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFFCC65C),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    side: const BorderSide(
+                      color: Color(0xFF2C2C2C),
+                      width: 1,
+                    ),
                   ),
                 ),
-            ),
-            child: const Text(
-             'Ir para a home',
-             style: TextStyle(
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.bold,
-               fontSize: 20,
-              color: Colors.white,
-             ),
+                child: const Text(
+                  'Ir para a home',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
+                ),
               ),
-                
-            )
             ),
           ],
-          
         ),
       ),
     );
