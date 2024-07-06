@@ -25,6 +25,8 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        width: double.infinity,
+        height: double.infinity,
         color: const Color(0xFFC5CBFD),
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -35,7 +37,7 @@ class MyHomePage extends StatelessWidget {
               style: TextStyle(
                 fontSize: 34,
                 color: Colors.white,
-                fontFamily: 'OpenSans', // Substitua pelo nome da sua fonte
+                fontFamily: 'Roboto', // Substitua pelo nome da sua fonte
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,

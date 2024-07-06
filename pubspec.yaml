@@ -24,6 +24,6 @@ flutter:
     - assets/image/logo.png
 
   fonts:
-    - family: OpenSans
+    - family: Roboto
       fonts:
-        - asset: assets/fonts/OpenSans-Bold.ttf
+        - asset: assets\fonts\Roboto-Bold.ttf
