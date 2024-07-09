@@ -14,10 +14,27 @@ class _CalendarioState extends State<Calendario> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Calendário'),
+        backgroundColor: const Color(0xFFC5CBFD),
+        title: const Text(
+          'Calendário',
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            color: Colors.white
+          ),
+        ),
+        centerTitle: true,
+         iconTheme: const IconThemeData(
+          color: Colors.white, 
+        ), 
+        elevation: 4.0, 
+        shadowColor: Colors.black.withOpacity(0.5),
       ),
-      body: const Center(
-        child: Text('Conteúdo do Calendário'),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: const Color(0xFFC5CBFD),
       ),
     );
   }
