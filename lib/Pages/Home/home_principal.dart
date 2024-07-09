@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:organizadortarefas/Pages/Calendario/calendario.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -22,9 +23,15 @@ class _HomeState extends State<Home> {
               leading: Icon(Icons.home_outlined, color: Color.fromARGB(255, 49, 49, 49)), 
               title: Text('Menu', style: TextStyle(color:Color.fromARGB(255, 49, 49, 49))),
             ),
-            const ListTile(
-              leading: Icon(Icons.date_range_outlined, color: Color.fromARGB(255, 49, 49, 49)), 
-              title: Text('Calendário', style: TextStyle(color:Color.fromARGB(255, 49, 49, 49))),
+            ListTile(
+              leading: const Icon(Icons.date_range_outlined, color: Color.fromARGB(255, 49, 49, 49)),
+              title: const Text('Calendário', style: TextStyle(color: Color.fromARGB(255, 49, 49, 49))),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Calendario()),
+                );
+              },
             ),
             const ListTile(
               leading: Icon(Icons.view_agenda_outlined, color: Color.fromARGB(255, 49, 49, 49)), 
