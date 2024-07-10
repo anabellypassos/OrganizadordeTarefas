@@ -11,6 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.6
+  table_calendar: ^3.1.2
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:
@@ -21,10 +23,11 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets\image\logo.png
-    - assets\image\menu.png
-    - assets\image\nave.png
+    - assets/image/logo.png
+    - assets/image/menu.png
+    - assets/image/nave.png
+
   fonts:
     - family: Roboto
       fonts:
-        - asset: assets\fonts\Roboto-Bold.ttf
+        - asset: assets/fonts/Roboto-Bold.ttf
