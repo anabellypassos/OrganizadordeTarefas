@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'dart:collection';
+import 'eventos_calen.dart'; // Importa o arquivo EventManager
 
 void main() {
   initializeDateFormatting().then((_) => runApp(const MyApp()));
@@ -34,26 +34,28 @@ class _CalendarioState extends State<Calendario> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
-  final LinkedHashMap<DateTime, List<Event>> events = LinkedHashMap(
-    equals: isSameDay,
-    hashCode: getHashCode,
-  );
+  final EventosCalen _eventosCalen = EventosCalen(); // Instância de EventManager
 
   @override
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
-  }
-
-  List<Event> _getEventsForDay(DateTime day) {
-    return events[day] ?? [];
+    _selectedEvents = ValueNotifier(_eventosCalen.getEventsForDay(_selectedDay!));
   }
 
   @override
   void dispose() {
     _selectedEvents.dispose();
     super.dispose();
+  }
+
+  void _addEvent() {
+    if (_selectedDay != null) {
+      setState(() {
+        _eventosCalen.addEvent(_selectedDay!, Event('Novo Evento'));
+        _selectedEvents.value = _eventosCalen.getEventsForDay(_selectedDay!);
+      });
+    }
   }
 
   @override
@@ -78,19 +80,18 @@ class _CalendarioState extends State<Calendario> {
         shadowColor: Colors.black.withOpacity(0.5),
       ),
       body: Container(
-
-       margin: const EdgeInsets.symmetric(vertical: 100.0, horizontal: 16.0), 
+        margin: const EdgeInsets.symmetric(vertical: 100.0, horizontal: 16.0),
         padding: const EdgeInsets.all(8.0),
-        alignment: Alignment.center, 
+        alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Colors.white, 
-          borderRadius: BorderRadius.circular(16.0), 
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.0),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: const Offset(0, 3), 
+              offset: const Offset(0, 3),
             ),
           ],
         ),
@@ -109,7 +110,7 @@ class _CalendarioState extends State<Calendario> {
                   setState(() {
                     _selectedDay = selectedDay;
                     _focusedDay = focusedDay;
-                    _selectedEvents.value = _getEventsForDay(selectedDay);
+                    _selectedEvents.value = _eventosCalen.getEventsForDay(selectedDay);
                   });
                 }
               },
@@ -122,7 +123,7 @@ class _CalendarioState extends State<Calendario> {
                 _focusedDay = focusedDay;
               },
               eventLoader: (day) {
-                return _getEventsForDay(day);
+                return _eventosCalen.getEventsForDay(day);
               },
               calendarBuilders: CalendarBuilders(
                 dowBuilder: (context, day) {
@@ -138,6 +139,11 @@ class _CalendarioState extends State<Calendario> {
                   return null;
                 },
               ),
+            ),
+            const SizedBox(height: 8.0),
+            ElevatedButton(
+              onPressed: _addEvent,
+              child: const Text('Adicionar Evento'),
             ),
             const SizedBox(height: 8.0),
             Expanded(
@@ -157,7 +163,7 @@ class _CalendarioState extends State<Calendario> {
                           borderRadius: BorderRadius.circular(12.0),
                         ),
                         child: ListTile(
-                          onTap: () => print('${value[index]}'),
+                          onTap: () => debugPrint('${value[index]}'),
                           title: Text('${value[index]}'),
                         ),
                       );
@@ -171,17 +177,4 @@ class _CalendarioState extends State<Calendario> {
       ),
     );
   }
-}
-
-int getHashCode(DateTime key) {
-  return key.day * 1000000 + key.month * 10000 + key.year;
-}
-
-class Event {
-  final String title;
-
-  Event(this.title);
-
-  @override
-  String toString() => title;
 }
