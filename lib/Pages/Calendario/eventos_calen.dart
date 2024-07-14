@@ -1,34 +1,31 @@
-import 'dart:collection';
-import 'package:flutter/gestures.dart';
-import 'package:table_calendar/table_calendar.dart' show isSameDay; // Ocultando o nome duplicado
-
 class Event {
   final String title;
-
-  Event(this.title);
+  const Event(this.title);
 
   @override
   String toString() => title;
 }
 
 class EventosCalen {
-  final LinkedHashMap<DateTime, List<Event>> events = LinkedHashMap(
-    equals: isSameDay,
-    hashCode: getHashCode,
-  );
+  final Map<DateTime, List<Event>> _events = {};
 
   List<Event> getEventsForDay(DateTime day) {
-    return events[day] ?? [];
+    return _events[day] ?? [];
   }
 
   void addEvent(DateTime day, Event event) {
-    if (events[day] == null) {
-      events[day] = [];
+    if (_events[day] == null) {
+      _events[day] = [];
     }
-    events[day]!.add(event);
+    _events[day]!.add(event);
   }
-}
 
-int getHashCode(DateTime key) {
-  return key.day * 1000000 + key.month * 10000 + key.year;
+  void removeEvent(DateTime day, Event event) {
+    if (_events[day] != null) {
+      _events[day]!.remove(event);
+      if (_events[day]!.isEmpty) {
+        _events.remove(day);
+      }
+    }
+  }
 }

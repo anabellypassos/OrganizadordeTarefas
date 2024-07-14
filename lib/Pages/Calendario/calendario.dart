@@ -1,23 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'eventos_calen.dart'; 
-
-void main() {
-  initializeDateFormatting().then((_) => runApp(const MyApp()));
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Calendario(),
-    );
-  }
-}
+import 'eventos_calen.dart';
 
 class Calendario extends StatefulWidget {
   const Calendario({super.key});
@@ -85,6 +69,15 @@ class _CalendarioState extends State<Calendario> {
     if (_selectedDay != null) {
       setState(() {
         _eventosCalen.addEvent(_selectedDay!, Event(title));
+        _selectedEvents.value = _eventosCalen.getEventsForDay(_selectedDay!);
+      });
+    }
+  }
+
+  void _removeEvent(Event event) {
+    if (_selectedDay != null) {
+      setState(() {
+        _eventosCalen.removeEvent(_selectedDay!, event);
         _selectedEvents.value = _eventosCalen.getEventsForDay(_selectedDay!);
       });
     }
@@ -208,6 +201,12 @@ class _CalendarioState extends State<Calendario> {
               child: ListTile(
                 onTap: () => debugPrint('$event'),
                 title: Text('$event'),
+                trailing: IconButton(
+                  icon: const Icon(Icons.delete,
+                  color: Colors.red,),
+                  
+                  onPressed: () => _removeEvent(event),
+                ),
               ),
             ),
           ).toList(),
