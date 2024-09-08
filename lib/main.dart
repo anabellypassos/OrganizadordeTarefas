@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Pages/Home/home_principal.dart';
+import 'Pages/home_principal.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const HomePrincipal(), // Corrigir aqui: Retorna a instância do widget
+        '/': (context) =>
+            const HomePrincipal(), // Corrigir aqui: Retorna a instância do widget
       },
     );
   }
