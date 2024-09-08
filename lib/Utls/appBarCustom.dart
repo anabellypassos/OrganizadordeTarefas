@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../Pages/adiconar_tarefas.dart';
 import '../Pages/home_principal.dart';
-
+import '../Pages/calendario.dart';
 class AppBarCustom extends StatelessWidget {
   const AppBarCustom({super.key});
 
@@ -10,22 +10,25 @@ class AppBarCustom extends StatelessWidget {
     return BottomNavigationBar(
       currentIndex: 0,
       onTap: (index) {
-        if (index == 2) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AdicionarTarefas()),
-          );
-        }
         if (index == 0) {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const HomePrincipal()),
           );
-        }
+        } 
+
         if (index == 1) {
+       
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const HomePrincipal()),
+            MaterialPageRoute(builder: (context) =>  const Calendario()),
+          );
+        }
+        if (index == 2) {
+      
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AdicionarTarefas()),
           );
         }
       },
