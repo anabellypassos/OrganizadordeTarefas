@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Pages/home_principal.dart';
+import 'Utls/appBarCustom.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) =>
-            const HomePrincipal(), // Corrigir aqui: Retorna a instância do widget
+            const Appbarcustom(), // Corrigir aqui: Retorna a instância do widget
       },
     );
   }

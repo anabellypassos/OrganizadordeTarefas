@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import '../../Utls/appbarCustom.dart';
 
 class HomePrincipal extends StatelessWidget {
-  const HomePrincipal({super.key});
+ 
+
+  const HomePrincipal(String s, {super.key, required String title});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,6 @@ class HomePrincipal extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: const AppBarCustom(), // Usando o BottomNavigationBar diretamente
       body: Center(
         child: Container(
           decoration: const BoxDecoration(

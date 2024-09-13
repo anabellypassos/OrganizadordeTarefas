@@ -3,7 +3,7 @@ import '../Utls/appBarCustom.dart';
 import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
 
 class AdicionarTarefas extends StatefulWidget {
-  const AdicionarTarefas({super.key});
+  const AdicionarTarefas(String s, {super.key});
 
   @override
   _AdicionarTarefasState createState() => _AdicionarTarefasState();
@@ -25,7 +25,6 @@ class _AdicionarTarefasState extends State<AdicionarTarefas> {
       body: const Center(
         child: Text('Conteúdo para adicionar tarefas'),
       ),
-      bottomNavigationBar: const AppBarCustom(), // Usando o widget importado
     );
   }
 }

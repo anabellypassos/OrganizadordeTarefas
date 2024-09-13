@@ -3,7 +3,7 @@ import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
 import './../Utls/appBarCustom.dart';
 
 class Calendario extends StatelessWidget {
-  const Calendario({super.key});
+  const Calendario(String s, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,6 @@ class Calendario extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const AppBarCustom(),
       body: const Text('OLÁ'),
     );
   }
