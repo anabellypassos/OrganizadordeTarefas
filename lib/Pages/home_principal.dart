@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-
 class HomePrincipal extends StatelessWidget {
- 
-
   const HomePrincipal(String s, {super.key, required String title});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        
         title: Text(
           'Minhas Tarefas',
           style: TextStyle(

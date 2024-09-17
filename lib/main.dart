@@ -14,13 +14,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        
       ),
       initialRoute: '/',
       routes: {
         '/': (context) =>
             const Appbarcustom(), // Corrigir aqui: Retorna a instância do widget
       },
+      debugShowCheckedModeBanner: false,
     );
   }
 }
