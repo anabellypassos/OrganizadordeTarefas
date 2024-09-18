@@ -15,14 +15,14 @@ class _AppbarcustomState extends State<Appbarcustom> {
   int _indiceAtual = 0;
   final List<Widget> _telas = [
    const HomePrincipal('Início', title: '',), 
-    const Calendario("Calendário"),
+    const Calendario('Calendário', title: ''),
     const AdicionarTarefas("Nova Tarefa")
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      
       body: _telas[_indiceAtual],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _indiceAtual,
