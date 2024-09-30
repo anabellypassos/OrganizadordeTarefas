@@ -1,15 +1,9 @@
-//Esse código Flutter cria uma tela de calendário interativa com a funcionalidade de adicionar eventos.
-
-//Imports:
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
 import 'package:flutter_event_calendar/flutter_event_calendar.dart';
+import '../dados/event_model.dart';
+import '../dados/databaseHelper .dart';
 
-/* Classe Calendario:
-A classe Calendario é um StatefulWidget, ou seja, sua interface pode mudar durante o tempo de execução.
-O construtor do Calendario aceita dois parâmetros: uma string (que não está sendo utilizada) e um title obrigatório.*/
 class Calendario extends StatefulWidget {
   const Calendario(String s, {super.key, required String title});
 
@@ -17,16 +11,15 @@ class Calendario extends StatefulWidget {
   CalendarioState createState() => CalendarioState();
 }
 
-
-
-/*Estado CalendarioState:
-A classe CalendarioState é responsável por gerenciar o estado da tela de calendário. Ela contém:
-_events: Uma lista de eventos (Event), que será usada para armazenar os eventos do calendário. */
-
-
 class CalendarioState extends State<Calendario> {
   final List<Event> _events = [];
+  late DatabaseHelper _dbHelper;
 
+  @override
+  void initState() {
+    super.initState();
+    _dbHelper = DatabaseHelper();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,12 +49,10 @@ class CalendarioState extends State<Calendario> {
                 selectedTextColor: Colors.white,
                 selectedBackgroundColor: Colors.purple[400]!,
               ),
-              
               onChangeDateTime: _onChangeDateTime,
             ),
           ),
-          
-          // Container que exibe a lista de eventos
+          // Lista de eventos
           Expanded(
             child: _events.isEmpty
                 ? const Center(
@@ -87,7 +78,6 @@ class CalendarioState extends State<Calendario> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                // Exibe o nome do evento
                                 Text(
                                   (event.child as Text).data ?? '',
                                   style: const TextStyle(
@@ -95,7 +85,6 @@ class CalendarioState extends State<Calendario> {
                                     fontSize: 16,
                                   ),
                                 ),
-                                // Exibe a data do evento
                                 Text(
                                   '${event.dateTime.day}-${event.dateTime.month}-${event.dateTime.year}',
                                   style: const TextStyle(
@@ -114,27 +103,37 @@ class CalendarioState extends State<Calendario> {
       ),
     );
   }
-/*_onChangeDateTime:
-Esta função é chamada sempre que o usuário muda a data no calendário. 
-Ela recebe a data selecionada (CalendarDateTime dateTime) e chama _showAddEventDialog,
- que exibe um diálogo para adicionar um evento na data escolhida.*/
 
+  /// Função chamada ao mudar a data no calendário.
   void _onChangeDateTime(CalendarDateTime dateTime) {
-    _showAddEventDialog(context, dateTime);
+    _loadEventsForSelectedDate(dateTime); // Carrega os eventos da data selecionada.
+    _showAddEventDialog(context, dateTime); // Exibe o diálogo para adicionar um evento.
   }
 
-/*Função _showAddEventDialog:
-Esta função exibe uma caixa de diálogo para o usuário adicionar um evento. Ela faz o seguinte:
+  /// Carrega os eventos da data selecionada a partir do banco de dados.
+  void _loadEventsForSelectedDate(CalendarDateTime dateTime) async {
+    String selectedDate = '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}';
+    List<EventModel> eventsFromDB = await _dbHelper.getEventsByDate(selectedDate);
 
-Cria um controlador de texto (eventController) para armazenar o nome do evento que o usuário digita.
-showDialog: Exibe uma caixa de diálogo com um campo de texto e dois botões: Cancelar e Salvar.
-Botão Cancelar: Fecha o diálogo sem salvar.
-Botão Salvar: Verifica se o campo de texto não está vazio, e se não estiver, 
-adiciona o evento à lista _events e fecha o diálogo.
- O evento adicionado contém um Text (o nome do evento) e a data selecionada.*/
+    setState(() {
+      _events.clear();
+      _events.addAll(
+        eventsFromDB.map(
+          (event) => Event(
+            child: Text(event.name),
+            dateTime: CalendarDateTime(
+              year: dateTime.year,
+              month: dateTime.month,
+              day: dateTime.day, calendarType:EventCalendar.calendarType,
+            ),
+          ),
+        ),
+      );
+    });
+  }
 
-  void _showAddEventDialog(
-      BuildContext context, CalendarDateTime selectedDate) {
+  /// Exibe uma caixa de diálogo para adicionar um evento.
+  void _showAddEventDialog(BuildContext context, CalendarDateTime selectedDate) {
     TextEditingController eventController = TextEditingController();
 
     showDialog(
@@ -167,14 +166,7 @@ adiciona o evento à lista _events e fecha o diálogo.
               onPressed: () {
                 String eventName = eventController.text;
                 if (eventName.isNotEmpty) {
-                  setState(() {
-                    _events.add(
-                      Event(
-                        child: Text(eventName),
-                        dateTime: selectedDate,
-                      ),
-                    );
-                  });
+                  _saveEventToDatabase(eventName, selectedDate); // Salva o evento no banco de dados
                 }
                 Navigator.of(context).pop();
               },
@@ -183,12 +175,17 @@ adiciona o evento à lista _events e fecha o diálogo.
                 style: TextStyle(color: Colors.white),
               ),
             ),
-            Container(
-            
-            )
           ],
         );
       },
     );
+  }
+
+  /// Salva o evento no banco de dados e atualiza a lista de eventos.
+  void _saveEventToDatabase(String eventName, CalendarDateTime selectedDate) async {
+    String formattedDate = '${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}';
+    EventModel newEvent = EventModel(name: eventName, date: formattedDate);
+    await _dbHelper.insertEvent(newEvent); // Insere o evento no banco de dados
+    _loadEventsForSelectedDate(selectedDate); // Recarrega os eventos da data selecionada
   }
 }
