@@ -19,6 +19,7 @@ class CalendarioState extends State<Calendario> {
   void initState() {
     super.initState();
     _dbHelper = DatabaseHelper();
+    _loadEventsForToday(); // Carrega os eventos ao iniciar a tela
   }
 
   @override
@@ -106,14 +107,18 @@ class CalendarioState extends State<Calendario> {
 
   /// Função chamada ao mudar a data no calendário.
   void _onChangeDateTime(CalendarDateTime dateTime) {
-    _loadEventsForSelectedDate(dateTime); // Carrega os eventos da data selecionada.
-    _showAddEventDialog(context, dateTime); // Exibe o diálogo para adicionar um evento.
+    _loadEventsForSelectedDate(
+        dateTime); // Carrega os eventos da data selecionada.
+    _showAddEventDialog(
+        context, dateTime); // Exibe o diálogo para adicionar um evento.
   }
 
   /// Carrega os eventos da data selecionada a partir do banco de dados.
   void _loadEventsForSelectedDate(CalendarDateTime dateTime) async {
-    String selectedDate = '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}';
-    List<EventModel> eventsFromDB = await _dbHelper.getEventsByDate(selectedDate);
+    String selectedDate =
+        '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}';
+    List<EventModel> eventsFromDB =
+        await _dbHelper.getEventsByDate(selectedDate);
 
     setState(() {
       _events.clear();
@@ -124,7 +129,8 @@ class CalendarioState extends State<Calendario> {
             dateTime: CalendarDateTime(
               year: dateTime.year,
               month: dateTime.month,
-              day: dateTime.day, calendarType:EventCalendar.calendarType,
+              day: dateTime.day,
+              calendarType: EventCalendar.calendarType,
             ),
           ),
         ),
@@ -133,7 +139,8 @@ class CalendarioState extends State<Calendario> {
   }
 
   /// Exibe uma caixa de diálogo para adicionar um evento.
-  void _showAddEventDialog(BuildContext context, CalendarDateTime selectedDate) {
+  void _showAddEventDialog(
+      BuildContext context, CalendarDateTime selectedDate) {
     TextEditingController eventController = TextEditingController();
 
     showDialog(
@@ -166,7 +173,8 @@ class CalendarioState extends State<Calendario> {
               onPressed: () {
                 String eventName = eventController.text;
                 if (eventName.isNotEmpty) {
-                  _saveEventToDatabase(eventName, selectedDate); // Salva o evento no banco de dados
+                  _saveEventToDatabase(eventName,
+                      selectedDate); // Salva o evento no banco de dados
                 }
                 Navigator.of(context).pop();
               },
@@ -182,10 +190,31 @@ class CalendarioState extends State<Calendario> {
   }
 
   /// Salva o evento no banco de dados e atualiza a lista de eventos.
-  void _saveEventToDatabase(String eventName, CalendarDateTime selectedDate) async {
-    String formattedDate = '${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}';
+  void _saveEventToDatabase(
+      String eventName, CalendarDateTime selectedDate) async {
+    String formattedDate =
+        '${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}';
     EventModel newEvent = EventModel(name: eventName, date: formattedDate);
     await _dbHelper.insertEvent(newEvent); // Insere o evento no banco de dados
-    _loadEventsForSelectedDate(selectedDate); // Recarrega os eventos da data selecionada
+    _loadEventsForSelectedDate(
+        selectedDate); // Recarrega os eventos da data selecionada
+  }
+
+  /// Carrega eventos do dia atual ao iniciar
+  void _loadEventsForToday() {
+    DateTime today =
+        DateTime.now(); // Obtém a data atual com a classe padrão DateTime
+
+    // Inicializando CalendarDateTime com o tipo de calendário correto
+    CalendarDateTime calendarToday = CalendarDateTime(
+      year: today.year,
+      month: today.month,
+      day: today.day,
+      calendarType: CalendarType
+          .GREGORIAN, // Defina o tipo de calendário que você está utilizando
+    );
+
+    _loadEventsForSelectedDate(
+        calendarToday); // Carrega os eventos da data de hoje
   }
 }
