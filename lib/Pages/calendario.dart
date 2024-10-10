@@ -218,3 +218,4 @@ class CalendarioState extends State<Calendario> {
         calendarToday); // Carrega os eventos da data de hoje
   }
 }
+ 

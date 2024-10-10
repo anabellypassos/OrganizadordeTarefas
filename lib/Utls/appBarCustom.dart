@@ -15,7 +15,7 @@ class _AppbarcustomState extends State<Appbarcustom> {
   int _indiceAtual = 0;
   final List<Widget> _telas = [
    const HomePrincipal('Início', title: '',), 
-    const Calendario('Calendário', title: ''),
+    const Calendario('Calendário',title: '',),
     const AdicionarTarefas("Nova Tarefa")
   ];
 
