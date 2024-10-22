@@ -16,7 +16,7 @@ class _AppbarcustomState extends State<Appbarcustom> {
   final List<Widget> _telas = [
    const HomePrincipal('Início', title: '',), 
     const Calendario('Calendário',title: '',),
-    const AdicionarTarefas("Nova Tarefa")
+    const AdicionarTarefas()
   ];
 
   @override
