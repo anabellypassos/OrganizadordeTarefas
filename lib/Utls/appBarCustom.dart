@@ -1,9 +1,7 @@
-// ignore: file_names
 import 'package:flutter/material.dart';
 import '../Pages/home_principal.dart';
 import '../Pages/calendario.dart';
 import '../Pages/adiconar_tarefas.dart';
-
 class Appbarcustom extends StatefulWidget {
   const Appbarcustom({super.key});
 
@@ -14,16 +12,14 @@ class Appbarcustom extends StatefulWidget {
 class _AppbarcustomState extends State<Appbarcustom> {
   int _indiceAtual = 0;
   final List<Widget> _telas = [
-   const HomePrincipal('Início', title: '',), 
-    const Calendario('Calendário',title: '',),
-    const AdicionarTarefas()
+    const HomePrincipal('Início', title: '',), 
+    const Calendario('Calendário', title: '',),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      body: _telas[_indiceAtual],
+      body: _indiceAtual < 2 ? _telas[_indiceAtual] : null, // Evita erro quando a index é 2
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _indiceAtual,
         onTap: onTabTapped,
@@ -45,9 +41,26 @@ class _AppbarcustomState extends State<Appbarcustom> {
     );
   }
 
-  void onTabTapped(int index) {
-    setState(() {
-      _indiceAtual = index;
-    });
+  void onTabTapped(int index) async {
+    if (index == 2) {
+      // Abre a tela `AdicionarTarefas` e espera o retorno
+      final novaTarefaAdicionada = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const AdicionarTarefas()),
+      );
+
+      // Verifica se uma nova tarefa foi adicionada e recarrega as tarefas
+      if (novaTarefaAdicionada == true) {
+        _carregarTarefas();
+      }
+    } else {
+      setState(() {
+        _indiceAtual = index;
+      });
+    }
+  }
+
+  void _carregarTarefas() {
+    
   }
 }

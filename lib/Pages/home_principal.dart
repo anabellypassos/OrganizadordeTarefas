@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../dados/atrefasdatabase.dart';
 import '../Utls/checkboxApp.dart';
 import '../dados/tarefasDataBase.dart';
+import 'adiconar_tarefas.dart';
 class HomePrincipal extends StatefulWidget {
   const HomePrincipal(String s, {super.key, required String title});
 
@@ -24,6 +25,7 @@ class _HomePrincipalState extends State<HomePrincipal> {
       _tarefas = tarefas;
     });
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -49,30 +51,44 @@ class _HomePrincipalState extends State<HomePrincipal> {
             ],
           ),
         ),
-      child: _tarefas.isEmpty
-    ? const Center(child: Text("Nenhuma tarefa salva."))
-    : ListView.builder(
-        itemCount: _tarefas.length,
-        itemBuilder: (context, index) {
-          final tarefa = _tarefas[index];
-          return Card(
-            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-            child: ListTile(
-              leading: const CheckboxExample(), 
-              title: Text(
-                tarefa.nametarefa,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              subtitle: Text(tarefa.descricao),
-            ),
+        child: _tarefas.isEmpty
+            ? const Center(child: Text("Nenhuma tarefa salva."))
+            : ListView.builder(
+                itemCount: _tarefas.length,
+                itemBuilder: (context, index) {
+                  final tarefa = _tarefas[index];
+                  return Card(
+                    margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                    child: ListTile(
+                      leading: const CheckboxExample(),
+                      title: Text(
+                        tarefa.nametarefa,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(tarefa.descricao),
+                    ),
                   );
                 },
               ),
       ),
-    
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          // Abre a tela `AdicionarTarefas` e espera o retorno
+          final novaTarefaAdicionada = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AdicionarTarefas()),
+          );
+
+          // Verifica se uma nova tarefa foi adicionada e recarrega as tarefas
+          if (novaTarefaAdicionada == true) {
+            _carregarTarefas();
+          }
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

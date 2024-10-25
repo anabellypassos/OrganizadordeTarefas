@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
 import '../dados/tarefasDataBase.dart';
 import '../dados/atrefasdatabase.dart';
+
 class AdicionarTarefas extends StatefulWidget {
   const AdicionarTarefas({super.key});
 
@@ -77,11 +78,10 @@ class _AdicionarTarefasState extends State<AdicionarTarefas> {
                   descricao: _descricaoController.text,
                 );
 
-                // Salva a nova tarefa no banco de dados
                 await TarefaDatabase.instance.inserirTarefa(novaTarefa);
 
-                // Volta para a tela anterior
-                Navigator.pop(context);
+                // Envia de volta para a `HomePrincipal` com a confirmação de nova tarefa
+                Navigator.pop(context, true);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
