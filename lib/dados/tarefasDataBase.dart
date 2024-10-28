@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'atrefasdatabase.dart';
+
 class TarefaDatabase {
   static final TarefaDatabase instance = TarefaDatabase._init();
   static Database? _database;
@@ -26,7 +27,8 @@ class TarefaDatabase {
       CREATE TABLE tarefas(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nametarefa TEXT NOT NULL,
-        descricao TEXT NOT NULL
+        descricao TEXT NOT NULL,
+        concluida INTEGER NOT NULL DEFAULT 0
       )
     ''');
   }
@@ -35,6 +37,7 @@ class TarefaDatabase {
     final db = await instance.database;
     await db.insert(
       'tarefas',
+      
       tarefa.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -48,4 +51,15 @@ class TarefaDatabase {
       return Atrefasdatabase.fromMap(maps[i]);
     });
   }
+   // Método para atualizar o status de conclusão da tarefa
+  Future<void> atualizarStatusTarefa(int id, bool concluida) async {
+    final db = await instance.database;
+    await db.update(
+      'tarefas',
+      {'concluida': concluida ? 1 : 0},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
 }
+

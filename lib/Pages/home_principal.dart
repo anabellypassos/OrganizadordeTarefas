@@ -3,6 +3,7 @@ import '../dados/atrefasdatabase.dart';
 import '../Utls/checkboxApp.dart';
 import '../dados/tarefasDataBase.dart';
 import 'adiconar_tarefas.dart';
+
 class HomePrincipal extends StatefulWidget {
   const HomePrincipal(String s, {super.key, required String title});
 
@@ -25,7 +26,6 @@ class _HomePrincipalState extends State<HomePrincipal> {
       _tarefas = tarefas;
     });
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -53,21 +53,29 @@ class _HomePrincipalState extends State<HomePrincipal> {
         ),
         child: _tarefas.isEmpty
             ? const Center(child: Text("Nenhuma tarefa salva."))
-            : ListView.builder(
-                itemCount: _tarefas.length,
-                itemBuilder: (context, index) {
-                  final tarefa = _tarefas[index];
-                  return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                    child: ListTile(
-                      leading: const CheckboxExample(),
-                      title: Text(
-                        tarefa.nametarefa,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+            :ListView.builder(
+  itemCount: _tarefas.length,
+  itemBuilder: (context, index) {
+    final tarefa = _tarefas[index];
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+      child: ListTile(
+        leading: CheckboxExample(
+          tarefa: tarefa,
+          onChanged: (bool concluida) {
+            setState(() {
+              tarefa.concluida = concluida;
+            });
+            TarefaDatabase.instance.atualizarStatusTarefa(tarefa.id!, concluida);
+          },
+        ),
+        title: Text(
+          tarefa.nametarefa,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
                       subtitle: Text(tarefa.descricao),
                     ),
                   );

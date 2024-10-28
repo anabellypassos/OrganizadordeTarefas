@@ -1,13 +1,15 @@
-// ignore: file_names
 import 'package:flutter/material.dart';
+import 'package:organizadortarefas/dados/atrefasdatabase.dart';
 
-abstract class Checkboxapp extends StatelessWidget {
-  const Checkboxapp({super.key});
-
-  
-}
 class CheckboxExample extends StatefulWidget {
-  const CheckboxExample({super.key});
+  final Atrefasdatabase tarefa;
+  final ValueChanged<bool> onChanged;
+
+  const CheckboxExample({
+    super.key,
+    required this.tarefa,
+    required this.onChanged,
+  });
 
   @override
   State<CheckboxExample> createState() => _CheckboxExampleState();
@@ -17,27 +19,22 @@ class _CheckboxExampleState extends State<CheckboxExample> {
   bool isChecked = false;
 
   @override
-  Widget build(BuildContext context) {
-    Color getColor(Set<WidgetState> states) {
-      const Set<WidgetState> interactiveStates = <WidgetState>{
-        WidgetState.pressed,
-        WidgetState.hovered,
-        WidgetState.focused,
-      };
-      if (states.any(interactiveStates.contains)) {
-        return Colors.blue;
-      }
-      return Colors.red;
-    }
+  void initState() {
+    super.initState();
+    isChecked = widget.tarefa.concluida;
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Checkbox(
       checkColor: Colors.white,
-      fillColor: WidgetStateProperty.resolveWith(getColor),
+      fillColor: WidgetStateProperty.all(Colors.blue),
       value: isChecked,
       onChanged: (bool? value) {
         setState(() {
           isChecked = value!;
         });
+        widget.onChanged(isChecked);
       },
     );
   }
