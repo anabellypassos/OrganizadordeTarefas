@@ -61,5 +61,13 @@ class TarefaDatabase {
       whereArgs: [id],
     );
   }
+   Future<void> excluirTarefa(int id) async {
+    final db = await instance.database;
+    await db.delete(
+      'tarefas',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
 }
 
