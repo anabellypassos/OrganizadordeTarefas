@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../Pages/home_principal.dart';
 import '../Pages/calendario.dart';
 import '../Pages/adiconar_tarefas.dart';
+
 class Appbarcustom extends StatefulWidget {
   const Appbarcustom({super.key});
 
@@ -12,31 +13,42 @@ class Appbarcustom extends StatefulWidget {
 class _AppbarcustomState extends State<Appbarcustom> {
   int _indiceAtual = 0;
   final List<Widget> _telas = [
-    const HomePrincipal('Início', title: '',), 
-    const Calendario('Calendário', title: '',),
+    const HomePrincipal('Início', title: ''),
+    const Calendario('Calendário', title: ''),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _indiceAtual < 2 ? _telas[_indiceAtual] : null, // Evita erro quando a index é 2
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _indiceAtual,
-        onTap: onTabTapped,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: "Início",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_outlined),
-            label: "Calendário",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.task_alt_outlined),
-            label: "Nova Tarefa",
-          ),
-        ],
+      body: _indiceAtual < 2 ? _telas[_indiceAtual] : null,
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            // Item de navegação para Início
+            Expanded(
+              child: IconButton(
+                icon: const Icon(Icons.home_outlined),
+                   iconSize: 30, 
+                onPressed: () => onTabTapped(0),
+              ),
+            ),
+            // Traço vertical
+            Container(
+              width: 1,
+              height: 40,
+              color: Colors.grey, // Cor do traço
+            ),
+            // Item de navegação para Calendário
+            Expanded(
+              child: IconButton(
+                icon: const Icon(Icons.calendar_month_outlined,),
+                   iconSize: 30, 
+                onPressed: () => onTabTapped(1),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -61,6 +73,6 @@ class _AppbarcustomState extends State<Appbarcustom> {
   }
 
   void _carregarTarefas() {
-    
+    // Função para recarregar as tarefas, se necessário
   }
 }

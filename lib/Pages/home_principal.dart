@@ -35,14 +35,53 @@ class _HomePrincipalState extends State<HomePrincipal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Minhas Tarefas',
-          style: TextStyle(
-            color: Colors.purple[800],
-          ),
+   appBar: AppBar(
+    elevation: 8, // Ajuste o valor para controlar a intensidade da sombra
+  shadowColor: Colors.grey.withOpacity(0.5), // Define a cor da sombra com opacidade
+  title: Center(
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Stack para o texto com borda
+        Stack(
+          children: [
+            // Texto para a borda, ligeiramente maior
+            Text(
+              'Minhas Tarefas',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                foreground: Paint()
+                  ..style = PaintingStyle.stroke
+                  ..strokeWidth = 4
+                  ..color = Colors.black, // Cor da borda
+              ),
+            ),
+            // Texto principal
+            const Text(
+              'Minhas Tarefas',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 241, 239, 241), // Cor do texto principal
+              ),
+            ),
+          ],
         ),
-      ),
+        
+        const SizedBox(width: 8), // Espaço entre o texto e a imagem
+
+        // Imagem ao lado direito do texto
+        SizedBox(
+          width: 60,
+          height: 60,
+          child: Image.asset('assets/image/logo.png'),
+        ),
+      ],
+    ),
+  ),
+),
+
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -57,7 +96,12 @@ class _HomePrincipalState extends State<HomePrincipal> {
           ),
         ),
         child: _tarefas.isEmpty
-            ? const Center(child: Text("Nenhuma tarefa salva."))
+            ? Center(child: SizedBox(
+              width: 500,
+              height: 500,
+              child: Image.asset('assets/image/nenhumatarefaencontrada.png')),
+           
+            )
             : ListView.builder(
                 itemCount: _tarefas.length,
                 itemBuilder: (context, index) {
@@ -94,6 +138,7 @@ class _HomePrincipalState extends State<HomePrincipal> {
               ),
       ),
       floatingActionButton: FloatingActionButton(
+        
         onPressed: () async {
           final novaTarefaAdicionada = await Navigator.push(
             context,
@@ -103,7 +148,8 @@ class _HomePrincipalState extends State<HomePrincipal> {
             _carregarTarefas();
           }
         },
-        child: const Icon(Icons.add),
+        highlightElevation: 50,
+        child:  const Icon(Icons.add),
       ),
     );
   }

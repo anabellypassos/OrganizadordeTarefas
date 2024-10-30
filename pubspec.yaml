@@ -33,6 +33,8 @@ flutter:
     - assets/image/logo.png
     - assets/image/menu.png
     - assets/image/nave.png
+    - assets/image/nenhumatarefaencontrada.png
+
 
   fonts:
     - family: Roboto

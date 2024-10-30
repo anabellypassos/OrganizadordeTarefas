@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
 import '../dados/tarefasDataBase.dart';
 import '../dados/atrefasdatabase.dart';
+import '../Utls/appBarCustom.dart';
 
 class AdicionarTarefas extends StatefulWidget {
   const AdicionarTarefas({super.key});
@@ -18,7 +19,49 @@ class _AdicionarTarefasState extends State<AdicionarTarefas> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: GradientAppBar(
-        title: const Text('Adicionar Tarefas'),
+
+  title: Center(
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Stack para o texto com borda
+        Stack(
+          children: [
+            // Texto para a borda, ligeiramente maior
+            Text(
+              'Adicionar Tarefas',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                foreground: Paint()
+                  ..style = PaintingStyle.stroke
+                  ..strokeWidth = 3
+                  ..color = Colors.black, // Cor da borda
+              ),
+            ),
+            // Texto principal
+            const Text(
+              'Adicionar Tarefas',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 241, 239, 241), // Cor do texto principal
+              ),
+            ),
+          ],
+        ),
+        
+        const SizedBox(width: 8), // Espaço entre o texto e a imagem
+
+        // Imagem ao lado direito do texto
+        SizedBox(
+          width: 60,
+          height: 60,
+          child: Image.asset('assets/image/logo.png'),
+        ),
+      ],
+    ),
+  ),
         gradient: const LinearGradient(
           colors: [
             Color.fromARGB(255, 60, 185, 235),
@@ -39,10 +82,12 @@ class _AdicionarTarefasState extends State<AdicionarTarefas> {
               children: [
                 TextField(
                   controller: _nomeTarefaController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
                     hintText: 'Nome da tarefa',
-                    hintStyle: TextStyle(
+                    hintStyle: const TextStyle(
                       fontSize: 18,
                       color: Colors.purple,
                     ),
@@ -84,16 +129,37 @@ class _AdicionarTarefasState extends State<AdicionarTarefas> {
                 Navigator.pop(context, true);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
+                backgroundColor: const Color.fromARGB(255, 235, 99, 174),
+                 elevation: 98, // Ajuste o valor para controlar a intensidade da sombra
+           shadowColor: Colors.grey.withOpacity(0.5), // Define a cor da sombra com opacidade
               ),
-              child: const Text(
-                'Salvar',
-                style: TextStyle(color: Colors.white),
+              
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                
+                children: [
+                  Text(
+                    'Salvar',
+                    style: TextStyle(
+                      color: Colors.white,
+                    fontSize: 20
+                    
+                    ),
+                  ),
+                 SizedBox(width: 8), // Espaço entre o texto e a imagem
+                  Icon(
+                    Icons.pets,
+                    color: Colors.black,
+                  ),
+                  
+                ],
               ),
+           
             ),
           ),
         ],
       ),
+     
     );
   }
 }
