@@ -26,7 +26,49 @@ class CalendarioState extends State<Calendario> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: GradientAppBar(
-        title: const Text('Compromissos'),
+        title: Center(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Stack para o texto com borda
+              Stack(
+                children: [
+                  // Texto para a borda, ligeiramente maior
+                  Text(
+                    'Eventos',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      foreground: Paint()
+                        ..style = PaintingStyle.stroke
+                        ..strokeWidth = 3
+                        ..color = Colors.black, // Cor da borda
+                    ),
+                  ),
+                  // Texto principal
+                  const Text(
+                    'Eventos',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(
+                          255, 241, 239, 241), // Cor do texto principal
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(width: 8), // Espaço entre o texto e a imagem
+
+              // Imagem ao lado direito do texto
+              SizedBox(
+                width: 60,
+                height: 60,
+                child: Image.asset('assets/image/logo.png'),
+              ),
+            ],
+          ),
+        ),
         gradient: const LinearGradient(
           colors: [
             Color.fromARGB(255, 60, 185, 235),
@@ -56,10 +98,11 @@ class CalendarioState extends State<Calendario> {
           // Lista de eventos
           Expanded(
             child: _events.isEmpty
-                ? const Center(
-                    child: Text(
-                      'Nenhum evento adicionado.',
-                      style: TextStyle(color: Colors.black),
+                ? SizedBox(
+                    width: 1560,
+                    height: 1560,
+                    child: Center(
+                      child: Image.asset('assets/image/evento.png'),
                     ),
                   )
                 : Container(
@@ -218,4 +261,3 @@ class CalendarioState extends State<Calendario> {
         calendarToday); // Carrega os eventos da data de hoje
   }
 }
- 

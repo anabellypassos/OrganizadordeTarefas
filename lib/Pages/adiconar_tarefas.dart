@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
 import '../dados/tarefasDataBase.dart';
 import '../dados/atrefasdatabase.dart';
-import '../Utls/appBarCustom.dart';
 
 class AdicionarTarefas extends StatefulWidget {
   const AdicionarTarefas({super.key});
@@ -112,49 +111,62 @@ class _AdicionarTarefasState extends State<AdicionarTarefas> {
                 ),
               ],
             ),
+            
           ),
           Positioned(
-            bottom: 20,
-            right: 20,
-            child: ElevatedButton(
-              onPressed: () async {
-                final novaTarefa = Atrefasdatabase(
-                  nametarefa: _nomeTarefaController.text,
-                  descricao: _descricaoController.text,
-                );
+           top: 270,
+           right: 20,
 
-                await TarefaDatabase.instance.inserirTarefa(novaTarefa);
-
-                // Envia de volta para a `HomePrincipal` com a confirmação de nova tarefa
-                Navigator.pop(context, true);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 235, 99, 174),
-                 elevation: 98, // Ajuste o valor para controlar a intensidade da sombra
-           shadowColor: Colors.grey.withOpacity(0.5), // Define a cor da sombra com opacidade
-              ),
-              
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
+            child:  ElevatedButton(
+           onPressed: () async {
+                    final novaTarefa = Atrefasdatabase(
+                      nametarefa: _nomeTarefaController.text,
+                      descricao: _descricaoController.text,
+                    );
                 
-                children: [
-                  Text(
-                    'Salvar',
-                    style: TextStyle(
-                      color: Colors.white,
-                    fontSize: 20
-                    
+                    await TarefaDatabase.instance.inserirTarefa(novaTarefa);
+                
+                    // Envia de volta para a `HomePrincipal` com a confirmação de nova tarefa
+                    Navigator.pop(context, true);
+                  },
+           style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 235, 99, 174),
+                     elevation: 98, // Ajuste o valor para controlar a intensidade da sombra
+                           shadowColor: Colors.grey.withOpacity(0.5), // Define a cor da sombra com opacidade
+                  ),
+           child: const Center(
+             child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      
+                      children: [
+                        Text(
+                          'Salvar',
+                          style: TextStyle(
+                            color: Colors.white,
+                          fontSize: 20
+                          
+                          ),
+                        ),
+                       SizedBox(width: 8), // Espaço entre o texto e a imagem
+                        Icon(
+                          Icons.pets,
+                          color: Colors.black,
+                        ),
+                        
+                      ],
                     ),
-                  ),
-                 SizedBox(width: 8), // Espaço entre o texto e a imagem
-                  Icon(
-                    Icons.pets,
-                    color: Colors.black,
-                  ),
-                  
-                ],
-              ),
-           
+           ),
+         ),
+         ),
+          Positioned(
+            bottom: 20,
+            right: 0,
+            left: 20,
+            child: Column(
+              children: [
+                Image.asset('assets/image/ornizadordetarefas.png'),
+               
+              ],
             ),
           ),
         ],

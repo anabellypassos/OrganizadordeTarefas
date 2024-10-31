@@ -32,8 +32,9 @@ flutter:
   assets:
     - assets/image/logo.png
     - assets/image/menu.png
-    - assets/image/nave.png
+    - assets/image/ornizadordetarefas.png
     - assets/image/nenhumatarefaencontrada.png
+    - assets/image/evento.png
 
 
   fonts:
