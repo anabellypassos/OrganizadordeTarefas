@@ -135,6 +135,14 @@ class CalendarioState extends State<Calendario> {
                                     color: Colors.grey,
                                   ),
                                 ),
+                                // Botão para excluir o evento
+                                IconButton(
+                                  icon: const Icon(Icons.close,
+                                      color: Colors.red),
+                                  onPressed: () {
+                                    _deleteEvent(event);
+                                  },
+                                ),
                               ],
                             ),
                           ),
@@ -260,4 +268,30 @@ class CalendarioState extends State<Calendario> {
     _loadEventsForSelectedDate(
         calendarToday); // Carrega os eventos da data de hoje
   }
+
+  /// Deleta um evento do banco de dados e atualiza a lista de eventos.
+  void _deleteEvent(Event event) async {
+    // Aqui você deve ter acesso ao ID do evento que você quer excluir.
+    // Para isso, vamos buscar o evento correspondente na lista.
+    int? eventId = await _getEventIdByName(event); // Passando o evento aqui
+
+    if (eventId != null) {
+      await _dbHelper.deleteEvent(eventId); // Remove o evento do banco de dados
+      _loadEventsForSelectedDate(
+          event.dateTime); // Recarrega os eventos da data selecionada
+    }
+  }
+
+  /// Método auxiliar para obter o ID do evento pelo nome.
+Future<int?> _getEventIdByName(Event event) async {
+    List<EventModel> events = await _dbHelper.getEventsByDate(
+        '${event.dateTime.year}-${event.dateTime.month.toString().padLeft(2, '0')}-${event.dateTime.day.toString().padLeft(2, '0')}');
+
+    for (var eventModel in events) {
+        if (eventModel.name == (event.child as Text).data) {
+            return eventModel.id; // Retorna o ID do evento encontrado
+        }
+    }
+    return null; // Retorna null se nenhum evento correspondente for encontrado
+}
 }

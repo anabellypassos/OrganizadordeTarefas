@@ -54,6 +54,7 @@ class _AdicionarTarefasState extends State<AdicionarTarefas> {
 
         // Imagem ao lado direito do texto
         SizedBox(
+          
           width: 60,
           height: 60,
           child: Image.asset('assets/image/logo.png'),
@@ -70,6 +71,7 @@ class _AdicionarTarefasState extends State<AdicionarTarefas> {
           ],
         ),
       ),
+        resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           Container(
@@ -159,6 +161,7 @@ class _AdicionarTarefasState extends State<AdicionarTarefas> {
          ),
          ),
           Positioned(
+            
             bottom: 20,
             right: 0,
             left: 20,
