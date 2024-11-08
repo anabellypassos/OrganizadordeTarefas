@@ -14,13 +14,22 @@ class Calendario extends StatefulWidget {
 class CalendarioState extends State<Calendario> {
   final List<Event> _events = [];
   late DatabaseHelper _dbHelper;
+  late CalendarDateTime _selectedDate; // Para armazenar a data selecionada
 
   @override
-  void initState() {
-    super.initState();
-    _dbHelper = DatabaseHelper();
-    _loadEventsForToday(); // Carrega os eventos ao iniciar a tela
-  }
+void initState() {
+  super.initState();
+  _dbHelper = DatabaseHelper();
+  _loadEventsForToday();
+  
+  DateTime now = DateTime.now();
+  _selectedDate = CalendarDateTime(
+    year: now.year,
+    month: now.month,
+    day: now.day,
+    calendarType: CalendarType.GREGORIAN,
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +39,8 @@ class CalendarioState extends State<Calendario> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Stack para o texto com borda
               Stack(
                 children: [
-                  // Texto para a borda, ligeiramente maior
                   Text(
                     'Eventos',
                     style: TextStyle(
@@ -42,25 +49,20 @@ class CalendarioState extends State<Calendario> {
                       foreground: Paint()
                         ..style = PaintingStyle.stroke
                         ..strokeWidth = 3
-                        ..color = Colors.black, // Cor da borda
+                        ..color = Colors.black,
                     ),
                   ),
-                  // Texto principal
                   const Text(
                     'Eventos',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(
-                          255, 241, 239, 241), // Cor do texto principal
+                      color: Color.fromARGB(255, 241, 239, 241),
                     ),
                   ),
                 ],
               ),
-
-              const SizedBox(width: 8), // Espaço entre o texto e a imagem
-
-              // Imagem ao lado direito do texto
+              const SizedBox(width: 8),
               SizedBox(
                 width: 60,
                 height: 60,
@@ -80,14 +82,11 @@ class CalendarioState extends State<Calendario> {
       ),
       body: Column(
         children: [
-          // Calendário
           Expanded(
             child: EventCalendar(
               calendarType: CalendarType.GREGORIAN,
               calendarLanguage: 'pt',
-              calendarOptions: CalendarOptions(
-                viewType: ViewType.DAILY,
-              ),
+              calendarOptions: CalendarOptions(viewType: ViewType.DAILY),
               dayOptions: DayOptions(
                 selectedTextColor: Colors.white,
                 selectedBackgroundColor: Colors.purple[400]!,
@@ -95,7 +94,6 @@ class CalendarioState extends State<Calendario> {
               onChangeDateTime: _onChangeDateTime,
             ),
           ),
-          // Lista de eventos
           Expanded(
             child: _events.isEmpty
                 ? SizedBox(
@@ -135,13 +133,9 @@ class CalendarioState extends State<Calendario> {
                                     color: Colors.grey,
                                   ),
                                 ),
-                                // Botão para excluir o evento
                                 IconButton(
-                                  icon: const Icon(Icons.close,
-                                      color: Colors.red),
-                                  onPressed: () {
-                                    _deleteEvent(event);
-                                  },
+                                  icon: const Icon(Icons.close, color: Colors.red),
+                                  onPressed: () => _deleteEvent(event),
                                 ),
                               ],
                             ),
@@ -153,56 +147,44 @@ class CalendarioState extends State<Calendario> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showAddEventDialog(context, _selectedDate),
+        backgroundColor: Colors.purple,
+        child: const Icon(
+          Icons.add,
+        color: Colors.white,
+        ),
+      ),
     );
   }
 
-  /// Função chamada ao mudar a data no calendário.
   void _onChangeDateTime(CalendarDateTime dateTime) {
-    _loadEventsForSelectedDate(
-        dateTime); // Carrega os eventos da data selecionada.
-    _showAddEventDialog(
-        context, dateTime); // Exibe o diálogo para adicionar um evento.
-  }
-
-  /// Carrega os eventos da data selecionada a partir do banco de dados.
-  void _loadEventsForSelectedDate(CalendarDateTime dateTime) async {
-    String selectedDate =
-        '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}';
-    List<EventModel> eventsFromDB =
-        await _dbHelper.getEventsByDate(selectedDate);
-
     setState(() {
-      _events.clear();
-      _events.addAll(
-        eventsFromDB.map(
-          (event) => Event(
-            child: Text(event.name),
-            dateTime: CalendarDateTime(
-              year: dateTime.year,
-              month: dateTime.month,
-              day: dateTime.day,
-              calendarType: EventCalendar.calendarType,
-            ),
-          ),
-        ),
-      );
+      _selectedDate = dateTime;
     });
+    _loadEventsForSelectedDate(dateTime);
   }
 
-  /// Exibe uma caixa de diálogo para adicionar um evento.
+  void _loadEventsForToday() {
+    DateTime today = DateTime.now();
+    CalendarDateTime calendarToday = CalendarDateTime(
+      year: today.year,
+      month: today.month,
+      day: today.day,
+      calendarType: CalendarType.GREGORIAN,
+    );
+    _loadEventsForSelectedDate(calendarToday);
+  }
+
   void _showAddEventDialog(
       BuildContext context, CalendarDateTime selectedDate) {
     TextEditingController eventController = TextEditingController();
-
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           backgroundColor: const Color.fromARGB(92, 160, 11, 224),
-          title: const Text(
-            'Adicionar Evento',
-            style: TextStyle(color: Colors.white),
-          ),
+          title: const Text('Adicionar Evento', style: TextStyle(color: Colors.white)),
           content: TextField(
             controller: eventController,
             decoration: const InputDecoration(
@@ -212,27 +194,18 @@ class CalendarioState extends State<Calendario> {
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text(
-                'Cancelar',
-                style: TextStyle(color: Colors.white),
-              ),
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancelar', style: TextStyle(color: Colors.white)),
             ),
             TextButton(
               onPressed: () {
                 String eventName = eventController.text;
                 if (eventName.isNotEmpty) {
-                  _saveEventToDatabase(eventName,
-                      selectedDate); // Salva o evento no banco de dados
+                  _saveEventToDatabase(eventName, selectedDate);
                 }
                 Navigator.of(context).pop();
               },
-              child: const Text(
-                'Salvar',
-                style: TextStyle(color: Colors.white),
-              ),
+              child: const Text('Salvar', style: TextStyle(color: Colors.white)),
             ),
           ],
         );
@@ -240,58 +213,49 @@ class CalendarioState extends State<Calendario> {
     );
   }
 
-  /// Salva o evento no banco de dados e atualiza a lista de eventos.
+  void _loadEventsForSelectedDate(CalendarDateTime dateTime) async {
+    String selectedDate =
+        '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}';
+    List<EventModel> eventsFromDB = await _dbHelper.getEventsByDate(selectedDate);
+
+    setState(() {
+      _events.clear();
+      _events.addAll(
+        eventsFromDB.map(
+          (event) => Event(
+            child: Text(event.name),
+            dateTime: dateTime,
+          ),
+        ),
+      );
+    });
+  }
+
   void _saveEventToDatabase(
       String eventName, CalendarDateTime selectedDate) async {
     String formattedDate =
         '${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}';
     EventModel newEvent = EventModel(name: eventName, date: formattedDate);
-    await _dbHelper.insertEvent(newEvent); // Insere o evento no banco de dados
-    _loadEventsForSelectedDate(
-        selectedDate); // Recarrega os eventos da data selecionada
+    await _dbHelper.insertEvent(newEvent);
+    _loadEventsForSelectedDate(selectedDate);
   }
 
-  /// Carrega eventos do dia atual ao iniciar
-  void _loadEventsForToday() {
-    DateTime today =
-        DateTime.now(); // Obtém a data atual com a classe padrão DateTime
-
-    // Inicializando CalendarDateTime com o tipo de calendário correto
-    CalendarDateTime calendarToday = CalendarDateTime(
-      year: today.year,
-      month: today.month,
-      day: today.day,
-      calendarType: CalendarType
-          .GREGORIAN, // Defina o tipo de calendário que você está utilizando
-    );
-
-    _loadEventsForSelectedDate(
-        calendarToday); // Carrega os eventos da data de hoje
-  }
-
-  /// Deleta um evento do banco de dados e atualiza a lista de eventos.
   void _deleteEvent(Event event) async {
-    // Aqui você deve ter acesso ao ID do evento que você quer excluir.
-    // Para isso, vamos buscar o evento correspondente na lista.
-    int? eventId = await _getEventIdByName(event); // Passando o evento aqui
-
+    int? eventId = await _getEventIdByName(event);
     if (eventId != null) {
-      await _dbHelper.deleteEvent(eventId); // Remove o evento do banco de dados
-      _loadEventsForSelectedDate(
-          event.dateTime); // Recarrega os eventos da data selecionada
+      await _dbHelper.deleteEvent(eventId);
+      _loadEventsForSelectedDate(event.dateTime);
     }
   }
 
-  /// Método auxiliar para obter o ID do evento pelo nome.
-Future<int?> _getEventIdByName(Event event) async {
+  Future<int?> _getEventIdByName(Event event) async {
     List<EventModel> events = await _dbHelper.getEventsByDate(
         '${event.dateTime.year}-${event.dateTime.month.toString().padLeft(2, '0')}-${event.dateTime.day.toString().padLeft(2, '0')}');
-
     for (var eventModel in events) {
-        if (eventModel.name == (event.child as Text).data) {
-            return eventModel.id; // Retorna o ID do evento encontrado
-        }
+      if (eventModel.name == (event.child as Text).data) {
+        return eventModel.id;
+      }
     }
-    return null; // Retorna null se nenhum evento correspondente for encontrado
-}
+    return null;
+  }
 }
