@@ -15,21 +15,22 @@ class CalendarioState extends State<Calendario> {
   final List<Event> _events = [];
   late DatabaseHelper _dbHelper;
   late CalendarDateTime _selectedDate; // Para armazenar a data selecionada
+  final Color _selectedDateBackgroundColor = Colors.purple;
 
   @override
-void initState() {
-  super.initState();
-  _dbHelper = DatabaseHelper();
-  _loadEventsForToday();
-  
-  DateTime now = DateTime.now();
-  _selectedDate = CalendarDateTime(
-    year: now.year,
-    month: now.month,
-    day: now.day,
-    calendarType: CalendarType.GREGORIAN,
-  );
-}
+  void initState() {
+    super.initState();
+    _dbHelper = DatabaseHelper();
+    _loadEventsForToday();
+
+    DateTime now = DateTime.now();
+    _selectedDate = CalendarDateTime(
+      year: now.year,
+      month: now.month,
+      day: now.day,
+      calendarType: CalendarType.GREGORIAN,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,10 +88,15 @@ void initState() {
               calendarType: CalendarType.GREGORIAN,
               calendarLanguage: 'pt',
               calendarOptions: CalendarOptions(viewType: ViewType.DAILY),
+              showLoadingForEvent: true,
               dayOptions: DayOptions(
-                selectedTextColor: Colors.white,
-                selectedBackgroundColor: Colors.purple[400]!,
-              ),
+                  selectedTextColor: Colors.white,
+                  selectedBackgroundColor: _selectedDateBackgroundColor,
+                  unselectedTextColor: Colors.black,
+                  unselectedBackgroundColor:
+                      const Color.fromARGB(255, 222, 151, 235),
+                     
+                      ),
               onChangeDateTime: _onChangeDateTime,
             ),
           ),
@@ -134,7 +140,8 @@ void initState() {
                                   ),
                                 ),
                                 IconButton(
-                                  icon: const Icon(Icons.close, color: Colors.red),
+                                  icon: const Icon(Icons.close,
+                                      color: Colors.red),
                                   onPressed: () => _deleteEvent(event),
                                 ),
                               ],
@@ -149,10 +156,9 @@ void initState() {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddEventDialog(context, _selectedDate),
-        backgroundColor: Colors.purple,
         child: const Icon(
           Icons.add,
-        color: Colors.white,
+          color: Colors.white,
         ),
       ),
     );
@@ -184,7 +190,8 @@ void initState() {
       builder: (context) {
         return AlertDialog(
           backgroundColor: const Color.fromARGB(92, 160, 11, 224),
-          title: const Text('Adicionar Evento', style: TextStyle(color: Colors.white)),
+          title: const Text('Adicionar Evento',
+              style: TextStyle(color: Colors.white)),
           content: TextField(
             controller: eventController,
             decoration: const InputDecoration(
@@ -195,7 +202,8 @@ void initState() {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancelar', style: TextStyle(color: Colors.white)),
+              child:
+                  const Text('Cancelar', style: TextStyle(color: Colors.white)),
             ),
             TextButton(
               onPressed: () {
@@ -205,7 +213,8 @@ void initState() {
                 }
                 Navigator.of(context).pop();
               },
-              child: const Text('Salvar', style: TextStyle(color: Colors.white)),
+              child:
+                  const Text('Salvar', style: TextStyle(color: Colors.white)),
             ),
           ],
         );
@@ -216,7 +225,8 @@ void initState() {
   void _loadEventsForSelectedDate(CalendarDateTime dateTime) async {
     String selectedDate =
         '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}';
-    List<EventModel> eventsFromDB = await _dbHelper.getEventsByDate(selectedDate);
+    List<EventModel> eventsFromDB =
+        await _dbHelper.getEventsByDate(selectedDate);
 
     setState(() {
       _events.clear();
