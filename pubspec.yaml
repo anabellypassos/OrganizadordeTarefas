@@ -11,7 +11,6 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.6
-  
   intl: ^0.19.0
   flutter_gradient_app_bar: ^0.3.1
   carousel_slider: ^4.2.1
@@ -20,6 +19,13 @@ dependencies:
   path: ^1.9.0
   logger: ^2.4.0
   flutter_local_notifications: ^17.2.3
+  flutter_launcher_icons: ^0.14.1
+
+flutter_icons:
+  android: true
+  image_path: "lib/dev_assets/iconnormal.png"
+  adaptive_icon_background: "#DE8AE5FF"
+  adaptive_icon_foreground: "lib/dev_assets/iconadaptative.png"
 
 dev_dependencies:
   flutter_test:
@@ -35,7 +41,6 @@ flutter:
     - assets/image/ornizadordetarefas.png
     - assets/image/nenhumatarefaencontrada.png
     - assets/image/evento.png
-
 
   fonts:
     - family: Roboto
