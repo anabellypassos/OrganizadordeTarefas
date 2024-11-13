@@ -1,11 +1,12 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    
-    <!-- Permissões necessárias -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package ="br.com.an.organizador">  
+
+  <!-- Permissões necessárias -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <application
-        android:label="organizadortarefas"
+        android:label="Tarefas "
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         
