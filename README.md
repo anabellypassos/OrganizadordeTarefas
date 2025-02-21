@@ -1,18 +1,24 @@
-# organizadortarefas
+# 📌 Organizador de Tarefas
+![Organize suas Tarefas (1)](https://github.com/user-attachments/assets/20262625-a908-41c2-875d-345a3e058b54)
+ 
 
-A new Flutter project.
+## 📝 Sobre o Projeto
 
-## Getting Started
+O **Organizador de Tarefas** é um aplicativo desenvolvido para ajudar no gerenciamento de tarefas e eventos diários. Com ele, você pode criar, visualizar e acompanhar suas atividades de forma simples e eficiente. O design intuitivo proporciona uma experiência agradável, tornando a organização da sua rotina mais prática e produtiva.
 
-This project is a starting point for a Flutter application.
+## 🚀 Tecnologias Utilizadas
 
-A few resources to get you started if this is your first Flutter project:
+- **Linguagem:** Dart
+- **Framework:** Flutter
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🎯 Funcionalidades
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+✅ Adicionar, editar e remover tarefas 📋  
+✅ Marcar tarefas como concluídas ✅  
+✅ Organização por categorias e datas 📅  
+✅ Interface amigável 
+ 
 
 
+
+   
